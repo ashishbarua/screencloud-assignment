@@ -8,6 +8,6 @@ export class SongsService {
 
     constructor(private dataService: DataService) {}
     getAll(params: SongsFilterDto ): Song[] {
-        return this.dataService.SongsRecords
+        return this.dataService.getSongs(params)
     }
 }

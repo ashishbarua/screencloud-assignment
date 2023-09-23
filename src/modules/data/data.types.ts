@@ -9,10 +9,12 @@ export class Song {
     Writer: string
     @ApiProperty()
     Album: string
-    @ApiProperty()
-    Year: number
+    // @ApiProperty()
+    // Year: number
     @ApiProperty()
     Plays: number
+    // @ApiProperty()
+    // Month: number
     @ApiProperty()
-    Month: number
+    RecordDate: Date
 }
