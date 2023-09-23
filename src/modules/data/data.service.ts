@@ -20,7 +20,7 @@ export class DataService implements OnModuleInit {
 
     transformRow(row: any): Song[] {
         const playRows = this.getPlayRows(row)
-        return playRows.map(pRow => ({ Song: row['Song'], Artist: row['Artist'], Writer: row['Writer'], Album: row['Album'], Year: row['Year'], ...pRow}))
+        return playRows.map(pRow => ({ Song: row['Song'], Artist: row['Artist'], Writer: row['Writer'], Album: row['Album'], Year: parseInt(row['Year'], 10), ...pRow}))
     }
 
     getPlayRows(row: any): Array<Pick<Song, 'Plays'> & Pick<Song, 'Month'>> {
