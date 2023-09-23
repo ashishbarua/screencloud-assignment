@@ -1,4 +1,4 @@
-export type SourceData = {
+export type Song = {
     Song: string
     Artist: string
     Writer: string

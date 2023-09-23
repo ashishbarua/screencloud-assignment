@@ -1,34 +1,33 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { SourceData } from "./data.types";
+import { Song } from "./data.types";
 import * as fs from 'fs'
 import * as csv from 'csv-parser'
 import { MONTH_NAME_NUMBER_MAPPING } from "../../utils";
 
 @Injectable()
 export class DataService implements OnModuleInit {
-    sourceData: Array<SourceData> = []
+    SongsRecords: Array<Song> = []
 
     onModuleInit() {
         const inputStream = fs.createReadStream('./raw-data.csv', 'utf8')
         inputStream.pipe(csv()).on('data', (row) => {
             const transformedRows = this.transformRow(row)
-            this.sourceData = [...this.sourceData, ...transformedRows]
+            this.SongsRecords = [...this.SongsRecords, ...transformedRows]
         }).on('end', () => {
-            console.log('No more rows!')
+            console.log('Records imported')
         })
     }
 
-    transformRow(row: any): SourceData[] {
-        console.log("What is this", this)
+    transformRow(row: any): Song[] {
         const playRows = this.getPlayRows(row)
         return playRows.map(pRow => ({ Song: row['Song'], Artist: row['Artist'], Writer: row['Writer'], Album: row['Album'], Year: row['Year'], ...pRow}))
     }
 
-    getPlayRows(row: any): Array<Pick<SourceData, 'Plays'> & Pick<SourceData, 'Month'>> {
+    getPlayRows(row: any): Array<Pick<Song, 'Plays'> & Pick<Song, 'Month'>> {
         const playsRegex = /^Plays\s-\s[a-zA-Z]+$/
         const playKeys = Object.keys(row).filter( k => k.match(playsRegex))
 
-        let rows: Array<Pick<SourceData, 'Plays'> & Pick<SourceData, 'Month'>> = []
+        let rows: Array<Pick<Song, 'Plays'> & Pick<Song, 'Month'>> = []
 
         for (const pKey of playKeys) {
             const [_, monthName ] = pKey.split(" - ")
@@ -38,6 +37,10 @@ export class DataService implements OnModuleInit {
         }
 
         return rows
+    }
+
+    getSongs(): Song[] {
+        return this.SongsRecords
     }
 
 
