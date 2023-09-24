@@ -6,6 +6,7 @@ import { MONTH_NAME_NUMBER_MAPPING } from "../../utils";
 import { SongsFilterDto } from "../songs/songs.types";
 import { compareAsc, subDays } from 'date-fns'
 import { AlbumsFilterDto } from "../albums/albums.types";
+import { ArtistsFilterDto } from "../artists/artists.types";
 
 @Injectable()
 export class DataService implements OnModuleInit {
@@ -46,12 +47,12 @@ export class DataService implements OnModuleInit {
         return rows
     }
 
-    getSongs(params: SongsFilterDto | AlbumsFilterDto): SongRecord[] {
+    getSongs(params: SongsFilterDto | AlbumsFilterDto | ArtistsFilterDto): SongRecord[] {
         let resultSongs = this.getFilteredSongs(params)
         return resultSongs
     }
 
-    getFilteredSongs(params: SongsFilterDto | AlbumsFilterDto): SongRecord[] {
+    getFilteredSongs(params: SongsFilterDto | AlbumsFilterDto | ArtistsFilterDto): SongRecord[] {
         const { song, artist, album, writer } = params
         let filteredRecords = this.getRecordsFilteredByDates(params)
         filteredRecords = filteredRecords.filter(record => {
@@ -74,7 +75,7 @@ export class DataService implements OnModuleInit {
         return filteredRecords
     }
 
-    getRecordsFilteredByDates(params: SongsFilterDto | AlbumsFilterDto): SongRecord[] {
+    getRecordsFilteredByDates(params: SongsFilterDto | AlbumsFilterDto | ArtistsFilterDto): SongRecord[] {
         const { yearFrom, yearTo, monthFrom, monthTo } = params
         if (!yearFrom && !yearTo) {
             return this.SongsRecords
