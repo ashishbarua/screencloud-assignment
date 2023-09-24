@@ -4,7 +4,7 @@ import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from "class-validat
 import { Type } from "class-transformer";
 
 export enum OrderBy {
-    Plays = 'Plays',
+    TotalPlays = 'TotalPlays',
     Artist = 'Artist',
     Song = 'Song',
     Album = 'Album'

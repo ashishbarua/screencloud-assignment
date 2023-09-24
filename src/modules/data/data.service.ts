@@ -2,8 +2,8 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PlayDetail, SongRecord } from "./data.types";
 import * as fs from 'fs'
 import * as csv from 'csv-parser'
-import { MONTH_NAME_NUMBER_MAPPING, getTotalPlayCounts } from "../../utils";
-import { OrderBy, SongsFilterDto } from "../songs/songs.types";
+import { MONTH_NAME_NUMBER_MAPPING } from "../../utils";
+import { SongsFilterDto } from "../songs/songs.types";
 import { compareAsc, subDays } from 'date-fns'
 
 @Injectable()
@@ -47,33 +47,7 @@ export class DataService implements OnModuleInit {
 
     getSongs(params: SongsFilterDto): SongRecord[] {
         let resultSongs = this.getFilteredSongs(params)
-        if (params.orderBy) {
-            resultSongs = this.getOrderedSongs(params.orderBy, resultSongs, params.isDesc || false)
-        }
-
         return resultSongs
-    }
-
-    getOrderedSongs(orderBy: OrderBy, songs: SongRecord[], isDesc = false): SongRecord[] {
-        const orderedSongs = [...songs]
-        if (orderBy === OrderBy.Plays) {
-            orderedSongs.sort((songA, songB) => {
-                const totalPlaysA = getTotalPlayCounts(songA.PlayDetails)
-                const totalPlaysB = getTotalPlayCounts(songB.PlayDetails)
-                if (!isDesc) {
-                    return totalPlaysA - totalPlaysB
-                }
-                return totalPlaysB - totalPlaysA
-            })
-        } else if (orderBy) {
-            orderedSongs.sort((songA, songB) => {
-                const valA = songA[orderBy]
-                const valB = songB[orderBy]
-                const orderResult = valA < valB ? -1 : 1
-                return isDesc ? orderResult * -1 : orderResult
-            })
-        }
-        return orderedSongs
     }
 
     getFilteredSongs(params: SongsFilterDto): SongRecord[] {
