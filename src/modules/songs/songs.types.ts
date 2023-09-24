@@ -10,9 +10,16 @@ export enum OrderBy {
     Album = 'Album'
 }
 
+
+export class SongRecordAndTotalPlays extends SongRecord {
+    @ApiProperty({ type: Number })
+    @IsNumber()
+    TotalPlays: number
+}
+
 export class SongsResponseDto {
-    @ApiProperty({ type: [SongRecord] })
-    songs: SongRecord[]
+    @ApiProperty({ type: [SongRecordAndTotalPlays] })
+    songs: SongRecordAndTotalPlays[]
 }
 
 export class SongsFilterDto {
@@ -72,4 +79,4 @@ export class SongsFilterDto {
     isDesc?: boolean
 }
 
-export type SongsResponseDTO = SongRecord & { TotalPlays: number}
+

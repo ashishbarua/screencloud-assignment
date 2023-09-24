@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { SongsService } from "./songs.service";
 import { ApiResponse } from "@nestjs/swagger";
-import { SongsFilterDto, SongsResponseDTO, SongsResponseDto } from "./songs.types";
+import { SongsFilterDto, SongsResponseDto } from "./songs.types";
 
 
 @Controller('song')
@@ -11,7 +11,7 @@ export class SongsController {
 
     @Get()
     @ApiResponse({ status: 200, description: 'List of songs requested', type: SongsResponseDto })
-    songs(@Query() params: SongsFilterDto): {songs: SongsResponseDTO[]} {
+    songs(@Query() params: SongsFilterDto): SongsResponseDto {
         return { songs: this.songsService.getAll(params) }
     }
 }
