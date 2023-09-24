@@ -1,7 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { SongRecord } from "../data/data.types";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
+
+export enum OrderBy {
+    Plays = 'Plays',
+    Artist = 'Artist',
+    Song = 'Song',
+    Album = 'Album'
+}
 
 export class SongsResponseDto {
     @ApiProperty({ type: [SongRecord] })
@@ -52,4 +59,17 @@ export class SongsFilterDto {
     @IsNumber()
     @Type(() => Number)
     monthTo?: number
+
+    @ApiProperty({ description: 'Order By', required: false, enum: OrderBy})
+    @IsOptional()
+    @IsEnum(OrderBy)
+    orderBy?: OrderBy
+
+    @ApiProperty({ description: 'Is Descending? Set to true if order should be in desc. order', required: false })
+    @IsOptional()
+    @IsBoolean()
+    @Type(() => Boolean)
+    isDesc?: boolean
 }
+
+export type SongsResponseDTO = SongRecord & { TotalPlays: number}
