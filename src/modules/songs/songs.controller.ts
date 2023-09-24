@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { Song } from "../data/data.types";
+import { SongRecord } from "../data/data.types";
 import { SongsService } from "./songs.service";
 import { ApiResponse } from "@nestjs/swagger";
 import { SongsFilterDto, SongsResponseDto } from "./songs.types";
@@ -12,7 +12,7 @@ export class SongsController {
 
     @Get()
     @ApiResponse({ status: 200, description: 'List of songs requested', type: SongsResponseDto })
-    songs(@Query() params: SongsFilterDto): {songs: Song[]} {
+    songs(@Query() params: SongsFilterDto): {songs: SongRecord[]} {
         return { songs: this.songsService.getAll(params) }
     }
 }

@@ -1,6 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger"
 
-export class Song {
+export class PlayDetail {
+    @ApiProperty()
+    RecordDate: Date
+    @ApiProperty()
+    Plays: number
+}
+
+export class SongRecord {
     @ApiProperty()
     Song: string
     @ApiProperty()
@@ -9,12 +16,6 @@ export class Song {
     Writer: string
     @ApiProperty()
     Album: string
-    // @ApiProperty()
-    // Year: number
-    @ApiProperty()
-    Plays: number
-    // @ApiProperty()
-    // Month: number
-    @ApiProperty()
-    RecordDate: Date
+    @ApiProperty({ type: [PlayDetail]})
+    PlayDetails: PlayDetail[]
 }

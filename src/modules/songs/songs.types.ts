@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Song } from "../data/data.types";
+import { SongRecord } from "../data/data.types";
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 
 export class SongsResponseDto {
-    @ApiProperty({ type: [Song] })
-    songs: Song[]
+    @ApiProperty({ type: [SongRecord] })
+    songs: SongRecord[]
 }
 
 export class SongsFilterDto {

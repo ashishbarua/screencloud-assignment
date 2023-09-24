@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { Song } from "./data.types";
+import { PlayDetail, SongRecord } from "./data.types";
 import * as fs from 'fs'
 import * as csv from 'csv-parser'
 import { MONTH_NAME_NUMBER_MAPPING } from "../../utils";
@@ -8,28 +8,29 @@ import { compareAsc, subDays } from 'date-fns'
 
 @Injectable()
 export class DataService implements OnModuleInit {
-    SongsRecords: Array<Song> = []
+    SongsRecords: Array<SongRecord> = []
 
     onModuleInit() {
         const inputStream = fs.createReadStream('./raw-data.csv', 'utf8')
         inputStream.pipe(csv()).on('data', (row) => {
-            const transformedRows = this.transformRow(row)
-            this.SongsRecords = [...this.SongsRecords, ...transformedRows]
+            const transformedRow = this.transformRow(row)
+            this.SongsRecords = [...this.SongsRecords, transformedRow]
         }).on('end', () => {
             console.log('Records imported')
         })
     }
 
-    transformRow(row: any): Song[] {
+    transformRow(row: any): SongRecord {
         const playRows = this.getPlayRows(row)
-        return playRows.map(pRow => ({ Song: row['Song'], Artist: row['Artist'], Writer: row['Writer'], Album: row['Album'], ...pRow}))
+        
+        return { Song: row['Song'], Artist: row['Artist'], Writer: row['Writer'], Album: row['Album'], PlayDetails: playRows }
     }
 
-    getPlayRows(row: any): Array<Pick<Song, 'Plays'> & Pick<Song, 'RecordDate'>> {
+    getPlayRows(row: any): PlayDetail[] {
         const playsRegex = /^Plays\s-\s[a-zA-Z]+$/
         const playKeys = Object.keys(row).filter( k => k.match(playsRegex))
 
-        let rows: Array<Pick<Song, 'Plays'> & Pick<Song, 'RecordDate'>> = []
+        let rows: PlayDetail[] = []
 
         for (const pKey of playKeys) {
             const [_, monthName ] = pKey.split(" - ")
@@ -44,7 +45,7 @@ export class DataService implements OnModuleInit {
         return rows
     }
 
-    getSongs(params: SongsFilterDto): Song[] {
+    getSongs(params: SongsFilterDto): SongRecord[] {
         const { song, artist, album, writer, yearFrom,  yearTo, monthFrom, monthTo  } = params
         const month = monthFrom || 1
         const dateFrom = new Date(yearFrom, month - 1, 1)
@@ -64,11 +65,12 @@ export class DataService implements OnModuleInit {
                 match = match && record.Writer.includes(writer)
             }
             if (yearFrom) {
-                console.log("Record date", record.RecordDate)
-                match = match && compareAsc(dateFrom, record.RecordDate) <= 0
+                const playDetails = record.PlayDetails
+                match = match && playDetails.filter(detail => (compareAsc(dateFrom, detail.RecordDate) <= 0)).length > 0
             }
             if (yearTo) {
-                match = match && compareAsc(dateTo, record.RecordDate) >= 0
+                const playDetails = record.PlayDetails
+                match = match && playDetails.filter(detail => (compareAsc(dateTo, detail.RecordDate) >= 0)).length > 0
             }
 
             return match
