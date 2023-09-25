@@ -23,7 +23,7 @@ export class ArtistRecord {
 
 export class ArtistResponseDto {
     @ApiProperty({ type: [ArtistRecord]})
-    albums: ArtistRecord[]
+    artists: ArtistRecord[]
 }
 
 export class ArtistsFilterDto {

@@ -9,6 +9,6 @@ export class ArtistsController {
     @Get()
     @ApiResponse({ status: 200, description: 'List of albums requested', type: ArtistResponseDto })
     albums(@Query() params: ArtistsFilterDto): ArtistResponseDto {
-        return { albums: this.albumsService.getAll(params) }
+        return { artists: this.albumsService.getAll(params) }
     }
 }
