@@ -43,7 +43,7 @@ type SongRecord = {
       "Artist": string, // name of the artist
       "Writer": string, // name of the writer
       "Album": string, // name of the album
-      "PlayDetails": Array<PlayDetail>, // List of PlayDetails type
+      "PlayDetails": Array<PlayDetail>, // List of PlayDetail type
       "TotalPlays": number, // Total Plays from all PlayDetails combined
     }
 
