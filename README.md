@@ -18,9 +18,9 @@ For simplicity, you can choose to run it on **dev mode**
 
 ## API Guidelines
 - There are 3 endpoints available in the API:-
-	- `/song`: To list all the songs' data
-	- `/album`: To list all the songs' data grouped by albums
-	-  `/artist`: To list all the songs' data grouped by artists
+	- `GET /song`: To list all the songs' data
+	- `GET /album`: To list all the songs' data grouped by albums
+	-  `GET /artist`: To list all the songs' data grouped by artists
 
 - The following query fields are available for filtering/sorting the data in all 3 endpoints:-
 - `song`:  Filter data by matching song name
