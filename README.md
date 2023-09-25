@@ -3,7 +3,7 @@
 This API lists all the songs along with details such as artist(s), albums(s) and total plays by month-year. There are separate endpoints to filter and sort the data for songs, albums and artists.
 
 # Setup
-- As this project requires NodeJS, please install it first. Once installed, please run the following command to install `pnpm`: `npm i -g pnpm`
+- As this project requires NodeJS, please install it first. Once installed, please run the following command to install **pnpm**: `npm i -g pnpm`
 - Download/clone the project
 - Navigate to the root directory and run `pnpm install` to install all dependencies
 - After installing all the dependencies, the project can be run in one of 2 ways:-
